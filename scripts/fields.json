@@ -85,6 +85,40 @@
         "step": 0.1
     },
     {
+        "name": "TOTALRAIN",
+        "longName":"total rain",
+        "absMin": 0,
+        "stops": [
+            0,
+            1,
+            5,
+            10,
+            15,
+            20,
+            25,
+            30,
+            35,
+            40,
+            45,
+            50
+        ],
+        "colors": [
+            "#000000",
+            "#ccffcc",
+            "#99ff99",
+            "#66ff66",
+            "#33cc33",
+            "#119911",
+            "#006600",
+            "#ffff00",
+            "#ff9933",
+            "#ff6633",
+            "#ff3333",
+            "#ff0000"
+        ],
+        "step": 1
+    },
+    {
         "name": "CONDASSN",
         "longName":"snow",
         "absMin":0,
