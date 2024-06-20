@@ -1,1 +1,274 @@
-../weather/scripts/Canada.json
+{
+    "name": "Canada",
+    "shortName": "CA",
+    "lonMin": -141.004167,
+    "lonMax": -52.6167,
+    "latMin": 41.72917,
+    "latMax": 83.11667,
+    "cities": [
+        {
+            "shortName": "stjohns",
+            "longName":"St. John's",
+            "province": "N",
+            "tz": "Canada/Newfoundland",
+            "lon": -52.738697,
+            "lat": 47.615169
+        },
+        {
+            "shortName": "gander",
+            "longName":"Gander",
+            "province": "N",
+            "tz": "Canada/Newfoundland",
+            "lon": -54.562719,
+            "lat": 48.946653
+        },
+        {
+            "shortName": "cornerBrook",
+            "longName":"Corner Brook",
+            "province": "N",
+            "tz": "Canada/Newfoundland",
+            "lon": -57.935276,
+            "lat": 48.957136
+        },
+        {
+            "shortName": "labradorCity",
+            "longName":"Labrador City",
+            "province": "L",
+            "tz": "Canada/Atlantic",
+            "lon": -66.9153,
+            "lat": 52.9384
+        },
+        {
+            "shortName": "churchillFalls",
+            "longName":"Churchill Falls",
+            "province": "L",
+            "tz": "Canada/Atlantic",
+            "lon": -64.0064,
+            "lat": 53.5317
+        },
+        {
+            "shortName": "hvgb",
+            "longName":"Happy Valley-Goose Bay",
+            "province": "L",
+            "tz": "Canada/Atlantic",
+            "lon": -60.3762,
+            "lat": 53.3086
+        },
+        {
+            "shortName": "montreal",
+            "longName":"Montreal",
+            "province": "QC",
+            "tz": "Canada/Eastern",
+            "lon": -73.554167,
+            "lat": 45.508889
+        },
+        {
+            "shortName": "quebecCity",
+            "longName":"Quebec City",
+            "province": "QC",
+            "tz": "Canada/Eastern",
+            "lon": -71.2075,
+            "lat": 46.8131
+        },
+        {
+            "shortName": "brisay",
+            "longName":"Brisay",
+            "province": "QC",
+            "tz": "Canada/Eastern",
+            "lon": -70.5271,
+            "lat": 54.4445
+        },
+        {
+            "shortName": "toronto",
+            "longName":"Toronto",
+            "province": "ON",
+            "tz": "Canada/Eastern",
+            "lon": -79.613560,
+            "lat": 43.675836
+        },
+        {
+            "shortName": "ottawa",
+            "longName":"Ottawa",
+            "province": "ON",
+            "tz": "Canada/Eastern",
+            "lon": -75.6972,
+            "lat": 45.4215
+        },
+        {
+            "shortName": "thunderBay",
+            "longName":"Thunder Bay",
+            "province": "ON",
+            "tz": "Canada/Eastern",
+            "lon": -89.260445,
+            "lat": 48.401438
+        },
+        {
+            "shortName": "halifax",
+            "longName":"Halifax",
+            "province": "NS",
+            "tz": "Canada/Atlantic",
+            "lon": -63.5728,
+            "lat": 44.6476
+        },
+        {
+            "shortName": "saintJohn",
+            "longName":"Saint John",
+            "province": "NB",
+            "tz": "Canada/Atlantic",
+            "lon": -66.056006,
+            "lat": 45.273331
+        },
+        {
+            "shortName": "charlottetown",
+            "longName":"Charlottetown",
+            "province": "PE",
+            "tz": "Canada/Atlantic",
+            "lon": -63.123840,
+            "lat": 46.294461
+        },
+        {
+            "shortName": "winnipeg",
+            "longName":"Winnipeg",
+            "province": "MB",
+            "tz": "Canada/Central",
+            "lon": -97.151980,
+            "lat": 49.904018
+        },
+        {
+            "shortName": "brandon",
+            "longName":"Brandon",
+            "province": "MB",
+            "tz": "Canada/Central",
+            "lon": -99.9515,
+            "lat": 49.8437
+        },
+        {
+            "shortName": "winkler",
+            "longName":"Winkler",
+            "province": "MB",
+            "tz": "Canada/Central",
+            "lon": -97.939722,
+            "lat": 49.181667
+        },
+        {
+            "shortName": "saskatoon",
+            "longName":"Saskatoon",
+            "province": "SK",
+            "tz": "Canada/Central",
+            "lon": -106.699934,
+            "lat": 52.168624
+        },
+        {
+            "shortName": "regina",
+            "longName":"Regina",
+            "province": "SK",
+            "tz": "Canada/Central",
+            "lon": -104.6189,
+            "lat": 50.4452
+        },
+        {
+            "shortName": "mapleCreek",
+            "longName":"Maple Creek",
+            "province": "SK",
+            "tz": "Canada/Central",
+            "lon": -109.479444,
+            "lat": 49.905833
+        },
+        {
+            "shortName": "edmonton",
+            "longName":"Edmonton",
+            "province": "AB",
+            "tz": "Canada/Mountain",
+            "lon": -113.4937,
+            "lat": 53.5461
+        },
+        {
+            "shortName": "calgary",
+            "longName":"Calgary",
+            "province": "AB",
+            "tz": "Canada/Mountain",
+            "lon": -114.0719,
+            "lat": 51.0447
+        },
+        {
+            "shortName": "lethbridge",
+            "longName":"Lethbridge",
+            "province": "AB",
+            "tz": "Canada/Mountain",
+            "lon": -112.8451,
+            "lat": 49.6956
+        },
+        {
+            "shortName": "redDeer",
+            "longName":"Red Deer",
+            "province": "AB",
+            "tz": "Canada/Mountain",
+            "lon": -113.8115,
+            "lat": 52.2690
+        },
+        {
+            "shortName": "banff",
+            "longName":"Banff",
+            "province": "AB",
+            "tz": "Canada/Mountain",
+            "lon": -115.5708,
+            "lat": 51.1784
+        },
+        {
+            "shortName": "jasper",
+            "longName":"Jasper",
+            "province": "AB",
+            "tz": "Canada/Mountain",
+            "lon": -118.0814,
+            "lat":52.8737
+        },
+        {
+            "shortName": "vancouver",
+            "longName":"Vancouver",
+            "province": "BC",
+            "tz": "Canada/Pacific",
+            "lon": -123.1207,
+            "lat": 49.2827
+        },
+        {
+            "shortName": "victoria",
+            "longName":"Victoria",
+            "province": "BC",
+            "tz": "Canada/Pacific",
+            "lon": -123.3656,
+            "lat": 48.4284
+        },
+        {
+            "shortName": "princeGeorge",
+            "longName":"Prince George",
+            "province": "BC",
+            "tz": "Canada/Pacific",
+            "lon": -122.7497,
+            "lat": 53.9171
+        },
+        {
+            "shortName": "yellowknife",
+            "longName":"Yellow Knife",
+            "province": "NT",
+            "tz": "Canada/Mountain",
+            "lon": -114.3718,
+            "lat": 62.4540
+        },
+        {
+            "shortName": "whitehorse",
+            "longName":"Whitehorse",
+            "province": "YT",
+            "tz": "Canada/Pacific",
+            "lon": -135.071119,
+            "lat": 60.710299
+        },
+        {
+            "shortName": "iqaluit",
+            "longName":"Iqaluit",
+            "province": "NU",
+            "tz": "Canada/Eastern",
+            "lon": -68.544460,
+            "lat": 63.755998
+        }
+    ]
+}

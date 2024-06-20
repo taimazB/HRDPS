@@ -1,1 +1,324 @@
-../weather/scripts/provinces.json
+[
+    {
+        "name": "Newfoundland",
+        "shortName":"N",
+        "hashtag":"nlwx",
+        "lonMin": -59.4042,
+        "lonMax": -52.6167,
+        "latMin": 46.6167,
+        "latMax": 52.0042,
+        "timeZoneHr": 3,
+	    "timeZone": "Canada/Newfoundland",
+        "cities": [
+            {
+                "name":"stjohns",
+                "lon":-52.738697,
+                "lat":47.615169
+            },
+            {
+                "name":"gander",
+                "lon":-54.559465,
+                "lat":48.946462
+            },
+            {
+                "name":"cornerBrook",
+                "lon":-57.930526,
+                "lat":48.948562
+            },
+            {
+                "name":"stanthony",
+                "lon":-55.595758,
+                "lat":51.374744
+            },
+            {
+                "name":"pab",
+                "lon":-59.164155,
+                "lat":47.588820
+            }
+        ]
+    },
+    {
+        "name": "Labrador",
+        "shortName":"L",
+        "hashtag":"nlwx",
+        "lonMin": -67.8083333,
+        "lonMax": -55.6208333,
+        "latMin": 51.4208333,
+        "latMax": 60.3708333,
+        "timeZoneHr": 4,
+	    "timeZone": "Canada/Atlantic",
+        "cities": [
+            {
+                "name":"labradorCity",
+                "lon":-66.9175,
+                "lat":52.9406
+            },
+            {
+                "name":"hvgb",
+                "lon":-60.4146,
+                "lat":53.3105
+            },
+            {
+                "name":"churchillFalls",
+                "lon":-64.0062,
+                "lat":53.5309
+            },
+            {
+                "name":"Nain",
+                "lon":-61.6940,
+                "lat":56.5429
+            },
+            {
+                "name":"cartwright",
+                "lon":-57.0210,
+                "lat":53.7066
+            }
+        ]
+    },
+    {
+        "name": "Quebec",
+        "shortName":"QC",
+        "hashtag":"qcwx",
+        "lonMin": -79.76667,
+        "lonMax": -57.1,
+        "latMin": 45,
+        "latMax": 62.59167,
+        "timeZoneHr": 5,
+	    "timeZone": "Canada/Eastern",
+        "cities": [
+            {
+                "name":"québecCity",
+                "lon":-71.208056,
+                "lat":46.813889
+            },
+            {
+                "name":"montréal",
+                "lon":-73.554167,
+                "lat":45.508889
+            },
+            {
+                "name":"gaspé",
+                "lon":-64.483333,
+                "lat":48.833333
+            },
+            {
+                "name":"inukjuak",
+                "lon":-78.1,
+                "lat":58.45
+            },
+            {
+                "name":"radisson",
+                "lon":-77.616667,
+                "lat":53.791667
+            }
+        ]
+    },
+    {
+        "name": "Ontario",
+        "shortName":"ON",
+        "hashtag":"onwx",
+        "lonMin": -95.1625,
+        "lonMax": -74.35,
+        "latMin": 41.7291667,
+        "latMax": 56.8625,
+        "timeZoneHr": 5,
+	    "timeZone": "Canada/Eastern",
+        "cities": [
+            {
+                "name":"toronto",
+                "lon":-79.613560,
+                "lat":43.675836
+            },
+            {
+                "name":"ottawa",
+                "lon":-75.692221,
+                "lat":45.411021
+            },
+            {
+                "name":"thunderBay",
+                "lon":-89.260445,
+                "lat":48.401438
+            },
+            {
+                "name":"windsor",
+                "lon":-83.023821,
+                "lat":42.282435
+            },
+            {
+                "name":"fortSevern",
+                "lon":-87.635,
+                "lat":55.9925
+            }
+        ]
+    },
+    {
+        "name": "Manitoba",
+        "shortName":"MB",
+        "hashtag":"mbwx",
+        "lonMin": -102.0,
+        "lonMax": -88.95,
+        "latMin": 48.99167,
+        "latMax": 60.0,
+        "timeZoneHr": 6,
+	    "timeZone": "Canada/Central",
+        "cities": [
+            {
+                "name":"winnipeg",
+                "lon": -97.151980,
+                "lat":49.904018
+            },
+            {
+                "name":"brandon",
+                "lon":-99.957274,
+                "lat":49.838869
+            },
+            {
+                "name":"churchill",
+                "lon":-94.164381,
+                "lat":58.769451
+            },
+            {
+                "name":"shamattawa",
+                "lon":-92.087372,
+                "lat":55.858424
+            },
+            {
+                "name":"brochet",
+                "lon":-101.679775,
+                "lat":57.885961
+            }
+        ]
+    },
+    {
+        "name": "Saskatchewan",
+        "shortName":"SK",
+        "hashtag":"skwx",
+        "lonMin": -110.0,
+        "lonMax": -101.3625,
+        "latMin": 48.99167,
+        "latMax": 60.0,
+        "timeZoneHr": 6,
+	    "timeZone": "Canada/Saskatchewan",
+        "cities": [
+            {
+                "name":"saskatoon",
+                "lon":-106.699934,
+                "lat":52.168624
+            },
+            {
+                "name":"regina",
+                "lon":-104.614484,
+                "lat":50.449558
+            },
+            {
+                "name":"uraniumCity",
+                "lon":-108.614444,
+                "lat":59.565833
+            },
+            {
+                "name":"buffaloNarrows",
+                "lon":-108.524444,
+                "lat":55.876944
+            },
+            {
+                "name":"creighton",
+                "lon":-101.897322,
+                "lat":54.7561
+            }
+        ]
+    },
+    {
+        "name": "Alberta",
+        "shortName":"AB",
+        "hashtag":"abwx",
+        "lonMin": -120,
+        "lonMax": -110,
+        "latMin": 48,
+        "latMax": 60,
+        "timeZoneHr": 7,
+	    "timeZone": "Canada/Mountain",
+        "cities": [
+            {
+                "name": "edmonton",
+                "lon": -113.4937,
+                "lat": 53.5461
+            },
+            {
+                "name": "calgary",
+                "lon": -114.0719,
+                "lat": 51.0447
+            },
+            {
+                "name": "medicineHat",
+                "lon": -110.676667,
+                "lat": 50.040833
+            },
+            {
+                "name": "fortMcMurray",
+                "lon": -111.380278,
+                "lat": 56.726389
+            },
+            {
+                "name": "jasper",
+                "lon": -118.084299,
+                "lat": 52.874208
+            }
+        ]
+    },
+    {
+        "name": "British Columbia",
+        "shortName":"BC",
+        "hashtag":"bcwx",
+        "lonMin": -139.0583333,
+        "lonMax": -114.0375000,
+        "latMin": 48.3041667,
+        "latMax": 60.0,
+        "timeZoneHr": 8,
+	    "timeZone": "Canada/Pacific",
+        "cities": [
+            {
+                "name": "vancouver",
+                "lon": -123.086826,
+                "lat": 49.247841
+            },
+            {
+                "name": "victoria",
+                "lon": -123.342247,
+                "lat": 48.441718
+            },
+            {
+                "name": "valemount",
+                "lon": -119.276111,
+                "lat": 52.831111
+            },
+            {
+                "name": "princeRupert",
+                "lon": -130.321393,
+                "lat": 54.312075
+            },
+            {
+                "name": "fortNelson",
+                "lon": -122.696472,
+                "lat": 58.805917
+            }
+        ]
+    },
+    {
+        "name": "Nova Scotia",
+        "shortName":"NS",
+        "hashtag":"nswx",
+	    "timeZone": "Canada/Atlantic"
+    },
+    {
+        "name": "New Brunswick",
+        "shortName":"NB",
+        "hashtag":"nbwx",
+	    "timeZone": "Canada/Atlantic"
+    },
+    {
+        "name": "Prince Edward Island",
+        "shortName":"PE",
+        "hashtag":"pewx",
+	    "timeZone": "Canada/Atlantic"
+    }
+]

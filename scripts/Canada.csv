@@ -1,1 +1,64 @@
-../weather/scripts/Canada.csv
+shortName,longName,province,tz,lon,lat
+"stjohns","St. John's","N","Canada/Newfoundland",-52.738697,47.615169
+"gander","Gander","N","Canada/Newfoundland",-54.562719,48.946653
+"cornerBrook","Corner Brook","N","Canada/Newfoundland",-57.935276,48.957136
+"deerLake","Deer Lake","N","Canada/Newfoundland",-57.4184,49.1852
+"stAnthony","St. Anthony","N","Canada/Newfoundland",-55.5978,51.3720
+"pab","Port aux Basques","N","Canada/Newfoundland",-59.1703,47.5866
+"labradorCity","Labrador City","L","Canada/Atlantic",-66.9153,52.9384
+"churchillFalls","Churchill Falls","L","Canada/Atlantic",-64.0064,53.5317
+"hvgb","Happy Valley-Goose Bay","L","Canada/Atlantic",-60.3762,53.3086
+"nain","Nain","L","Canada/Atlantic",-61.6969,56.5417
+"marysHarbour","Mary's Harbour","L","Canada/Atlantic",-55.8374,52.3052
+"hebron","Hebron","L","Canada/Atlantic",-62.6259,58.1991
+"montreal","Montreal","QC","Canada/Eastern",-73.554167,45.508889
+"quebecCity","Quebec City","QC","Canada/Eastern",-71.2075,46.8131
+"","Gatineau","QC","Canada/Eastern",-75.847222,45.589722
+"","Sherbrooke","QC","Canada/Eastern",-71.9,45.4
+"","Trois-Rivières","QC","Canada/Eastern",-72.543333,46.343056
+"","Saint-Jérôme","QC","Canada/Eastern",-74,45.783333
+"toronto","Toronto","ON","Canada/Eastern",-79.613560,43.675836
+"ottawa","Ottawa","ON","Canada/Eastern",-75.6972,45.4215
+"","London","ON","Canada/Eastern",-81.2325,42.9675
+"","Windsor","ON","Canada/Eastern",-82.993611,42.302222
+"","Sudbury","ON","Canada/Eastern",-81.069444,46.577778
+"thunderBay","Thunder Bay","ON","Canada/Eastern",-89.260445,48.401438
+"halifax","Halifax","NS","Canada/Atlantic",-63.5728,44.6476
+"","Sydney","NS","Canada/Atlantic",-60.195556,46.136389
+"","Truro","NS","Canada/Atlantic",-63.28,45.364722
+"","New Glasgow","NS","Canada/Atlantic",-62.645458,45.59256
+"","Yarmouth","NS","Canada/Atlantic",-66.115278,43.838611
+"","Amherst","NS","Canada/Atlantic",-64.213056,45.833333
+"","Moncton","NB","Canada/Atlantic",-64.771389,46.132778
+"saintJohn","Saint John","NB","Canada/Atlantic",-66.056006,45.273331
+"","Fredericton","NB","Canada/Atlantic",-66.643056,45.963611
+"","Dieppe","NB","Canada/Atlantic",-64.724167,46.098889
+"","Miramichi","NB","Canada/Atlantic",-65.508889,47.0225
+"","Edmundston","NB","Canada/Atlantic",-68.325347,47.3765
+"winnipeg","Winnipeg","MB","Canada/Central",-97.151980,49.904018
+"brandon","Brandon","MB","Canada/Central",-99.9515,49.8437
+"winkler","Winkler","MB","Canada/Central",-97.939722,49.181667
+"","Steinbach","MB","Canada/Central",-96.683889,49.525833
+"","Portage la Prairie","MB","Canada/Central", -98.291944,49.972778
+"","Thompson","MB","Canada/Central",-97.855278,55.743333
+"saskatoon","Saskatoon","SK","Canada/Central",-106.699934,52.168624
+"regina","Regina","SK","Canada/Central",-104.6189,50.4452
+"","Prince Albert","SK","Canada/Central",-105.75,53.2
+"","Moose Jaw","SK","Canada/Central",-105.551944,50.393333
+"","Swift Current","SK","Canada/Central",-107.793889,50.288056
+"","Yorkton","SK","Canada/Central",-102.462778,51.213889
+"calgary","Calgary","AB","Canada/Mountain",-114.0719,51.0447
+"edmonton","Edmonton","AB","Canada/Mountain",-113.4937,53.5461
+"redDeer","Red Deer","AB","Canada/Mountain",-113.8115,52.2690
+"lethbridge","Lethbridge","AB","Canada/Mountain",-112.8451,49.6956
+"banff","Banff","AB","Canada/Mountain",-115.5708,51.1784
+"jasper","Jasper","AB","Canada/Mountain",-118.0814,52.8737
+"vancouver","Vancouver","BC","Canada/Pacific",-123.1207,49.2827
+"victoria","Victoria","BC","Canada/Pacific",-123.3656,48.4284
+"","Kelowna","BC","Canada/Pacific",-119.495556,49.888056
+"","Nanaimo","BC","Canada/Pacific",-123.936389,49.164167
+"","Chilliwack","BC","Canada/Pacific",-121.950917,49.157722
+"princeGeorge","Prince George","BC","Canada/Pacific",-122.7497,53.9171
+"yellowknife","Yellow Knife","NT","Canada/Mountain",-114.3718,62.4540
+"whitehorse","Whitehorse","YT","Canada/Pacific",-135.071119,60.710299
+"iqaluit","Iqaluit","NU","Canada/Eastern",-68.544460,63.755998
