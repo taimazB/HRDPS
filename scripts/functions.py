@@ -69,7 +69,7 @@ def extractProvince(item):
     Canada = pd.read_csv(f'scripts/Canada.csv')
     selectedCities = Canada[Canada['province']==province]
     df = {}
-    df['datetime'] = datetimes(selectedCities['tz'].iloc[0])
+    df['datetime'] = datetimes(selectedCities['tz'].iloc[0], fieldName)
     for i,city in enumerate(selectedCities.iterrows()):
         lon = city[1]['lon']
         lat = city[1]['lat']
@@ -133,8 +133,8 @@ def extractProvince(item):
         imageio.imwrite(output, np.flipud(varNewInt))
 
 
-def datetimes(timeZone):
-    files = sorted(glob('nc/TMP/HRDPS*.nc'))
+def datetimes(timeZone, fieldName):
+    files = sorted(glob(f'nc/{fieldName}/HRDPS*.nc'))
     datetimes = ['_'.join(Path(f).stem.split('_')[2:]) for f in files]
     #
     utc = pytz.utc
