@@ -109,6 +109,13 @@ export -f merge
 # }
 # export -f humidex
 
+function calcTotalRain {
+    i=$1
+    datetime=`ls | head -$i | tail -1 | cut -d_ -f3-4`
+    cdo -O -z zip_1 enssum -chname,CONDALPCPN,TOTALRAIN `ls | head -$i` ${MAIN}/nc/TOTALRAIN/HRDPS_TOTALRAIN_${datetime}
+}
+export -f calcTotalRain
+
 function nc2gj {
     f=$1 ##  WITHOUT extension
     levels=$2
@@ -247,10 +254,17 @@ find . -name *.nc | parallel 'removeDims {}'
 #     cdo -O -z zip_1 merge ${d}/HRDPS_* ${d}/all.nc
 # done
 
+##  TOTAL RAIN
+mkdir ${MAIN}/nc/TOTALRAIN
+cd ${MAIN}/nc/CONDALPCPN
+n=`ls | wc -l`
+parallel 'calcTotalRain {}' ::: `seq 1 $n`
+
+
 date
 
 cd ${MAIN}
-parallel 'python3 scripts/cnv.py' ::: TMP CONDALPCPN CONDASSN WSPD
+parallel 'python3 scripts/cnv.py' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN
 python3 scripts/datetimes.py {}
 
 
