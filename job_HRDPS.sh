@@ -98,16 +98,16 @@ function merge {
 }
 export -f merge
 
-# function humidex {
-#     tFile=$1
-#     dewFile=$(echo $tFile | sed "s/_airTemperature_/_dewPoint_/")
-#     humidexFile=$(echo $tFile | sed "s/_airTemperature_/_humidex_/")
+function calcHumidex {
+    tFile=$1
+    dewFile=$(echo $tFile | sed "s/_TMP_/_DPT_/")
+    humidexFile=$(echo $tFile | sed "s/_TMP_/_HUMIDEX_/")
 
-#     cdo -f nc merge ${MAIN}/nc/airTemperature/${tFile} ${MAIN}/nc/dewPoint/${dewFile} ${MAIN}/nc/humidex/${humidexFile}
-#     ncap2 -O -s 'humidex=airTemperature + (3.39556)*2.71828^(19.8336 - 5417.75/(dewPoint+273.15)) - 5.5556' ${MAIN}/nc/humidex/${humidexFile} ${MAIN}/nc/humidex/${humidexFile}
-#     ncks -O -v humidex ${MAIN}/nc/humidex/${humidexFile} ${MAIN}/nc/humidex/${humidexFile}
-# }
-# export -f humidex
+    cdo -f nc merge ${MAIN}/nc/TMP/${tFile} ${MAIN}/nc/DPT/${dewFile} ${MAIN}/nc/HUMIDEX/${humidexFile}
+    ncap2 -O -s 'HUMIDEX=TMP + (3.39556)*2.71828^(19.8336 - 5417.75/(DPT+273.15)) - 5.5556' ${MAIN}/nc/HUMIDEX/${humidexFile} ${MAIN}/nc/HUMIDEX/${humidexFile}
+    ncks -O -v HUMIDEX ${MAIN}/nc/HUMIDEX/${humidexFile} ${MAIN}/nc/HUMIDEX/${humidexFile}
+}
+export -f calcHumidex
 
 function calcTotalRain {
     i=$1
@@ -197,7 +197,7 @@ ls *${lastDlDateTime}*-WEonG_CONDASSN*.grib2 | sort | parallel 'rename {} param1
 # ls *${lastDlDateTime}*-WEonG_CONDAPL*.grib2 | sort | parallel 'rename {} param157.1.0 CONDAPL remapbil' # Conditional amount of solid ice pellets
 # ls *${lastDlDateTime}*-WEonG_CONDAFZPCPN*.grib2 | sort | parallel 'rename {} param95.1.0 CONDAFZPCPN remapbil' # Conditional amount of freezing precipitation
 # ls *${lastDlDateTime}*-WEonG_CONDAPCPN*.grib2 | sort | parallel 'rename {} param159.1.0 CONDAPCPN remapbil' # Conditional amount of precipitation
-# ls *${lastDlDateTime}*-WEonG_DPT*.grib2 | sort | parallel 'rename {} 2d DPT remapbil' # Dew point temperature
+ls *${lastDlDateTime}*-WEonG_DPT*.grib2 | sort | parallel 'rename {} 2d DPT remapbil' # Dew point temperature
 # ls *${lastDlDateTime}*-WEonG_GUST*.grib2 | sort | parallel 'rename {} gust GUST remapbil' # Gust
 # ls *${lastDlDateTime}*-WEonG_HGTSNLVL*.grib2 | sort | parallel 'rename {} param40.19.0 HGTSNLVL remapbil' # Height of snow level
 ls *${lastDlDateTime}*-WEonG_TMP*.grib2 | sort | parallel 'rename {} 2t TMP remapbil' # Temperature
@@ -210,8 +210,8 @@ ls *${lastDlDateTime}*-WEonG_WSPD*.grib2 | sort | parallel 'rename {} 10si WSPD 
 ##  K -> C
 cd ${MAIN}/nc/TMP
 ls *_TMP_*.nc | parallel 'K2C {}'
-# cd ${MAIN}/nc/DPT
-# ls *_DPT_*.nc | parallel 'K2C {}'
+cd ${MAIN}/nc/DPT
+ls *_DPT_*.nc | parallel 'K2C {}'
 
 ##  m/s -> km/hr
 cd ${MAIN}/nc/WSPD
@@ -219,10 +219,10 @@ ls *.nc | parallel 'cnvSpeed {}'
 # cd ${MAIN}/nc/GUST
 # ls *.nc | parallel 'cnvSpeed {}'
 
-# ##  HUMIDEX
-# # cd ${MAIN}/nc/airTemperature
-# # mkdir -p ${MAIN}/nc/humidex
-# # ls *_airTemperature_*.nc | parallel 'humidex {}'
+##  HUMIDEX
+cd ${MAIN}/nc/TMP
+mkdir -p ${MAIN}/nc/HUMIDEX
+ls HRDPS*.nc | parallel 'calcHumidex {}'
 
 # ##  Pa -> hPa
 # cd ${MAIN}/nc/PRMSL
@@ -264,7 +264,7 @@ parallel 'calcTotalRain {}' ::: `seq 1 $n`
 date
 
 cd ${MAIN}
-parallel 'python3 scripts/cnv.py' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN
+parallel 'python3 scripts/cnv.py' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN HUMIDEX
 python3 scripts/datetimes.py {}
 
 
