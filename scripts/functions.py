@@ -77,7 +77,7 @@ def extractProvince(item):
         iLat = np.argmin(np.abs(latNC-lat))
         values = []
         for var_t in var:
-            if(fieldName == 'TMP' or fieldName == 'WSPD'):
+            if(fieldName == 'TMP' or fieldName == 'WSPD' or fieldName == 'HUMIDEX'):
                 values.append(round(var_t[iLat,iLon]))
             else:
                 values.append(round(var_t[iLat,iLon],1))
