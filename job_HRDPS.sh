@@ -153,7 +153,7 @@ function sync {
     
     #T rsync -ar -e "ssh -p ${SERVER_PORT}" ${MAIN}/nc ${SERVER_IP}:${SERVER_DIR}/
     #T rsync -ar -e "ssh -p ${SERVER_PORT}" ${MAIN}/data ${SERVER_IP}:${SERVER_DIR}/
-    rsync -ar --delete ${MAIN}/nc taimaz.ddns.net:/home/taimaz/Projects/Blender/Projects/weather/
+    rsync -ar --exclude '*.nc' --delete ${MAIN}/nc taimaz.ddns.net:/home/taimaz/Projects/Blender/Projects/weather/
     rsync -ar --delete ${MAIN}/data taimaz.ddns.net:/home/taimaz/Projects/Blender/Projects/weather/nc/
 }
 
@@ -263,7 +263,7 @@ parallel 'calcTotalRain {}' ::: `seq 1 $n`
 
 cd ${MAIN}
 parallel 'python3 scripts/cnv.py' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN HUMIDEX
-python3 scripts/datetimes.py {}
+# python3 scripts/datetimes.py {}
 
 date
 

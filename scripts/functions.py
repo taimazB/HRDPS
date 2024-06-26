@@ -116,9 +116,6 @@ def datetimes(timeZone, fieldName):
     tz = pytz.timezone(timeZone)
     datetimesLocal = [datetime.strptime(dt, '%Y%m%d_%H').replace(tzinfo=utc).astimezone(tz).strftime('%A, %B %d-%H:%M') for dt in datetimes]
     return datetimesLocal
-    # with open(f'data/tz_{row["shortName"]}.txt', 'w') as f:
-    #     for dt in datetimesLocal:
-    #         f.write(dt + '\n')
 
 
 def process(field):
@@ -131,8 +128,7 @@ def process(field):
     devNull = os.system(f'mkdir -p nc/{fieldName}/images')
     #
     nc = Dataset(f"nc/{fieldName}/all.nc")
-    var = nc.variables[fieldName][:]  # .data
-    # missingValue = nc[fieldName].missing_value
+    var = nc.variables[fieldName][:]
     #
     # latitude, longitude
     lonNC = nc.variables['longitude'][:].data
@@ -157,66 +153,3 @@ def process(field):
     #
     with multiprocessing.Pool() as p:
         p.map(extractProvince, listExtract)
-
-    
-
-
-# def processB(item):
-#     [i, fNC, field, cities, allColors] = item
-#     devNull = os.system('mkdir -p HRDPS/%s/CA/tiles' % field['name'])
-#     devNull = os.system('mkdir -p HRDPS/%s/CA/values' % field['name'])
-#     #
-#     fileName = fNC.split('.')[0]
-#     nc = Dataset("HRDPS/%s/CA/%s.nc" % (field['name'], fileName), 'r')
-#     varName = fileName.split('_')[1]
-#     dateTime = '_'.join(fileName.split('_')[2:])
-#     var = nc.variables[varName][:].data
-#     missingValue = nc[varName].missing_value
-#     #
-#     # latitude, longitude, depth
-#     lonNC = nc.variables['longitude'][:].data
-#     latNC = nc.variables['latitude'][:].data
-#     lonNC[lonNC >= 180] -= 360
-#     #
-#     var[var == missingValue] = -9999
-#     f = interpolate.interp2d(lonNC, latNC, var, kind='linear')
-#     #
-#     lonNew = np.arange(-62.235, -52, 0.04) # np.arange(lonNC[0], lonNC[-1], 0.04)
-#     latNew = np.arange(45, 55.235, 0.04) # np.arange(latNC[0], latNC[-1], 0.04)
-#     #
-#     varNew = f(lonNew, latNew)
-#     #
-#     import json
-#     from shapely.geometry import shape, Point
-#     #
-#     with open('topos/geojson/N.geojson') as f:
-#         geojson_data = json.load(f)
-#     #
-#     # Extract the boundary polygon from the GeoJSON file
-#     boundary_polygon = shape(geojson_data['features'][0]['geometry'])
-#     #
-#     # Create meshgrid of latitude and longitude coordinates
-#     long_grid, lat_grid = np.meshgrid(lonNew, latNew)
-#     #
-#     try:
-#         mask.any()
-#     except:
-#         # Create a mask based on whether each point falls within the boundary polygon
-#         mask = np.array([boundary_polygon.contains(Point(lon, lat)) for lon, lat in zip(long_grid.ravel(), lat_grid.ravel())])
-#     #
-#     if (np.any(~np.isnan(varNew))):
-#         varNewRounded = np.flipud(np.round(varNew, int(-math.log10(field['step']))))
-#         varNewRounded[varNewRounded < field['stops'][0]] = np.nan
-#         varNewRounded[varNewRounded > field['stops'][-1]] = field['stops'][-1]
-#         mask = mask.reshape(varNewRounded.shape)  # Reshape mask to match temperatures array shape
-#         varNewRounded[~mask] = np.nan
-#         varNewInt = ((varNewRounded - field['stops'][0]) / field['step'])+1
-#         varNewInt = 100*(varNewInt-np.nanmin(varNewInt))
-#         varNewInt[np.isnan(varNewInt)] = 0
-#         varNewInt = varNewInt.astype(np.uint16)
-#         imageio.imwrite(f"HRDPS/{field['name']}/CA/bw/{fileName}.png", varNewInt)
-#         varNewInt = ((varNewRounded - field['stops'][0]) / field['step'])+1
-#         varNewInt[np.isnan(varNewInt)] = 0
-#         varNewInt = varNewInt.astype(np.uint16)
-#         varColored = allColors[varNewInt].astype(np.uint8)
-#         imageio.imwrite(f"HRDPS/{field['name']}/CA/colored/{fileName}.png", varColored)
