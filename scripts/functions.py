@@ -49,40 +49,26 @@ def genColors(stops, colors, step):
     return allColors
 
 
-# def extractNC(item):
-#     fieldName, CANADA, fNC = item[0], item[1], item[2]
-#     lonMin = CANADA['lonMin'].unique()[0]
-#     lonMax = CANADA['lonMax'].unique()[0]
-#     latMin = CANADA['latMin'].unique()[0]
-#     latMax = CANADA['latMax'].unique()[0]
-#     #
-#     devNull = os.system('mkdir -p HRDPS/%s/CA' % fieldName)
-#     devNull = os.system('cdo sellonlatbox,%f,%f,%f,%f HRDPS/%s/%s HRDPS/%s/CA/%s' %
-#                         (lonMin, lonMax, latMin, latMax, fieldName, fNC, fieldName, fNC))
-
-
 def extractProvince(item):
     province, lonNC, latNC, var, fieldName, varMin, varMax, fieldStep = item
     devNull = os.system(f'mkdir -p nc/{fieldName}/images/{province}')
     #
     ##  EXTRACT CITIES
-    Canada = pd.read_csv(f'scripts/Canada.csv')
-    selectedCities = Canada[Canada['province']==province]
+    cities = pd.read_csv(f'scripts/cities.csv')
+    selectedCities = cities[cities['province']==province]
     df = {}
     df['datetime'] = datetimes(selectedCities['tz'].iloc[0], fieldName)
-    for i,city in enumerate(selectedCities.iterrows()):
-        lon = city[1]['lon']
-        lat = city[1]['lat']
+    for row in selectedCities.iterrows():
+        id = row[1]['id']
+        lon = row[1]['lon']
+        lat = row[1]['lat']
         iLon = np.argmin(np.abs(lonNC-lon))
         iLat = np.argmin(np.abs(latNC-lat))
         values = []
         for var_t in var:
-            if(fieldName == 'TMP' or fieldName == 'WSPD' or fieldName == 'HUMIDEX'):
-                values.append(round(var_t[iLat,iLon]))
-            else:
-                values.append(round(var_t[iLat,iLon],1))
-        #
-        df[f"city_{i+1}"] = values
+            values.append(var_t[iLat,iLon])
+        df[f"city_{id}"] = values
+    #
     df = pd.DataFrame(data=df)
     df.to_csv(f'data/{province}_{fieldName}.csv',index=None)
     #
@@ -91,18 +77,6 @@ def extractProvince(item):
     #
     boundary_polygon = shape(geojson_data['features'][0]['geometry'])
     lonMin, latMin, lonMax, latMax = boundary_polygon.bounds
-    # lonMid = (lonMin+lonMax)/2
-    # latMid = (latMin+latMax)/2
-    # dLon = lonMax-lonMin
-    # dLat = latMax-latMin
-    # maxWidth = max(dLon,dLat)+2
-    # lonMin = lonMid-maxWidth/2
-    # lonMax = lonMid+maxWidth/2
-    # latMin = latMid-maxWidth/2
-    # latMax = latMid+maxWidth/2
-    #
-    # maxXdistance = distance.geodesic([latMin,lonMin],[latMin,lonMax]).km
-    # maxYdistance = distance.geodesic([latMin,lonMin],[latMax,lonMin]).km
     #
     iLonMin = np.argmin(np.abs(lonNC-lonMin))
     iLonMax = np.argmin(np.abs(lonNC-lonMax))

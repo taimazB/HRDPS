@@ -261,12 +261,11 @@ n=`ls | wc -l`
 parallel 'calcTotalRain {}' ::: `seq 1 $n`
 
 
-date
-
 cd ${MAIN}
 parallel 'python3 scripts/cnv.py' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN HUMIDEX
 python3 scripts/datetimes.py {}
 
+date
 
 # SYNC
 (
