@@ -52,6 +52,7 @@ def genColors(stops, colors, step):
 def extractProvince(item):
     province, lonNC, latNC, var, fieldName, varMin, varMax, fieldStep = item
     devNull = os.system(f'mkdir -p nc/{fieldName}/images/{province}')
+    devNull = os.system(f'mkdir -p nc/{fieldName}/data')
     #
     ##  EXTRACT CITIES
     cities = pd.read_csv(f'scripts/cities.csv')
@@ -70,7 +71,7 @@ def extractProvince(item):
         df[f"city_{id}"] = values
     #
     df = pd.DataFrame(data=df)
-    df.to_csv(f'data/{province}_{fieldName}.csv',index=None)
+    df.to_csv(f'nc/{fieldName}/data/{province}.csv',index=None)
     #
     with open(f'topos/geojson/{province}.geojson') as f:
         geojson_data = json.load(f)

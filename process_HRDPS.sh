@@ -1,15 +1,6 @@
-#!/bin/bash
-
-#SBATCH --job-name=HRDPS
-#SBATCH --nodes=1
-#SBATCH --cpus-per-task=32
-#SBATCH --time=12:00:00
-#SBATCH --output=logs/%j.out
-#SBATCH --error=logs/%j.err
-#SBATCH --priority=2001
-
 date
-source ./configs.sh
+# source ./configs.sh
+export MAIN=$PWD
 
 ##  FIND LATEST MODEL RUN
 lastDlDateTime=$(cat ${MAIN}/.lastDlDateTime)
@@ -145,31 +136,6 @@ function nc2pbf {
 }
 export -f nc2pbf
 
-function sync {
-    # dir=$1
-    # cd ${MAIN}/nc/${dir}
-
-    # rsync -ar -e "ssh -p ${SERVER_PORT}" . ${SERVER_IP}:${SERVER_DIR}/${dir}_${lastDlDateTime}/
-    
-    #T rsync -ar -e "ssh -p ${SERVER_PORT}" ${MAIN}/nc ${SERVER_IP}:${SERVER_DIR}/
-    #T rsync -ar -e "ssh -p ${SERVER_PORT}" ${MAIN}/data ${SERVER_IP}:${SERVER_DIR}/
-    rsync -ar --exclude '*.nc' --delete ${MAIN}/nc taimaz.ddns.net:/home/taimaz/Projects/Blender/Projects/weather/
-    rsync -ar --delete ${MAIN}/data taimaz.ddns.net:/home/taimaz/Projects/Blender/Projects/weather/nc/
-}
-
-function finalize {
-    ssh -p ${SERVER_PORT} ${SERVER_IP} <<EOF
-cd ${SERVER_DIR}/nc
-for dir in *; do
-rm -r ../\${dir}
-mv \${dir} ..
-done
-
-cd ${SERVER_DIR}
-ls TMP/*2*.nc | xargs -I{} basename {} .nc | cut -d_ -f 3-4 > .availDateTimes
-rm -r ${SERVER_DIR}/nc
-EOF
-}
 
 ##  FUNCTIONS
 ############################################################################
@@ -244,16 +210,6 @@ done
 cd ${MAIN}/nc
 find . -name *.nc | parallel 'removeDims {}'
 
-## EXTRACT STATIONS
-# cd ${MAIN}/nc
-# parallel 'python3 ${MAIN}/scripts/stations.py {} linear' ::: CONDAFZPCPN CONDAPCPN CONDASSN GUST PRMSL PROBDZ PROBFZPCPN PROBLPCPN PROBPL PROBSN PROBTSOCRNC RH TMP WSPD CONDALPCPN CONDAPL DPT HGTSNLVL PROBBLSN PROBFZDZ PROBFZRA PROBPCPN PROBRA PROBSNSQ TCDC WDIR
-
-##  MERGE DATETIMES
-# cd ${MAIN}/nc
-# for d in *; do
-#     cdo -O -z zip_1 merge ${d}/HRDPS_* ${d}/all.nc
-# done
-
 ##  TOTAL RAIN
 mkdir ${MAIN}/nc/TOTALRAIN
 cd ${MAIN}/nc/CONDALPCPN
@@ -262,16 +218,6 @@ parallel 'calcTotalRain {}' ::: `seq 1 $n`
 
 
 cd ${MAIN}
-parallel 'python3 scripts/cnv.py' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN HUMIDEX
-# python3 scripts/datetimes.py {}
+parallel 'python3 scripts/cnv.py {}' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN HUMIDEX
 
 date
-
-# SYNC
-(
-    sync
-    finalize
-    # rsync -aur -e 'ssh -p 4413' nc root@cloudzy.ddns.net:
-    rm -r ${MAIN}/grib2 ${MAIN}/nc
-    rm ${MAIN}/.active
-) &

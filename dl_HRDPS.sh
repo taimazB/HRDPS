@@ -1,9 +1,12 @@
+##  This file is included in the docker image for reference only.
+
 #!/bin/bash
 export dlLink="https://dd.weather.gc.ca/model_hrdps/continental/2.5km"
+export MAIN=$PWD
 
 ############################################################################
 
-source ./configs.sh
+# source ./configs.sh
 
 lasts=()
 for hr in 00 06 12 18; do
@@ -19,7 +22,7 @@ if [[ -e ${MAIN}/.active ]] || [[ ${lastAvailDateTime} == ${lastDlDateTime} ]] |
 fi
 
 touch ${MAIN}/.active
-rm -r ${MAIN}/nc 2>/dev/null
+# rm -r ${MAIN}/nc 2>/dev/null
 
 export lastHour=`echo ${lastAvailDateTime} | sed 's/.*T\(.*\)Z/\1/'`
 
@@ -52,4 +55,4 @@ done
 echo ${lastAvailDateTime} > ${MAIN}/.lastDlDateTime
 
 cd ${MAIN}
-sbatch job_HRDPS.sh
+sbatch submit.sh
