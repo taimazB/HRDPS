@@ -20,7 +20,7 @@ data
 
 
 rsync -ar --exclude '*.nc' --delete ${MAIN}/nc ${SERVER_IP}:${SERVER_DIR}
-rsync -ar --delete ${MAIN}/data ${SERVER_IP}:${SERVER_DIR}/nc/
+# rsync -ar --delete ${MAIN}/data ${SERVER_IP}:${SERVER_DIR}/nc/
 
 
 rm .active
