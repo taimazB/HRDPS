@@ -15,7 +15,7 @@ export SERVER_DIR=/home/taimaz/models/canadaClim/${MODEL}
 
 ##  This file is included in the docker image for reference only.
 data
-docker run -v ./:/app hrdps:latest
+docker run --rm -v ./:/app hrdps:latest
 data
 
 

@@ -1,6 +1,7 @@
 date
 # source ./configs.sh
 export MAIN=$PWD
+export MODEL=HRDPS
 
 ##  FIND LATEST MODEL RUN
 lastDlDateTime=$(cat ${MAIN}/.lastDlDateTime)
@@ -164,7 +165,7 @@ ls *${lastDlDateTime}*-WEonG_CONDASSN*.grib2 | sort | parallel 'rename {} param1
 # ls *${lastDlDateTime}*-WEonG_CONDAFZPCPN*.grib2 | sort | parallel 'rename {} param95.1.0 CONDAFZPCPN remapbil' # Conditional amount of freezing precipitation
 # ls *${lastDlDateTime}*-WEonG_CONDAPCPN*.grib2 | sort | parallel 'rename {} param159.1.0 CONDAPCPN remapbil' # Conditional amount of precipitation
 ls *${lastDlDateTime}*-WEonG_DPT*.grib2 | sort | parallel 'rename {} 2d DPT remapbil' # Dew point temperature
-# ls *${lastDlDateTime}*-WEonG_GUST*.grib2 | sort | parallel 'rename {} gust GUST remapbil' # Gust
+ls *${lastDlDateTime}*-WEonG_GUST*.grib2 | sort | parallel 'rename {} i10fg GUST remapbil' # Gust
 # ls *${lastDlDateTime}*-WEonG_HGTSNLVL*.grib2 | sort | parallel 'rename {} param40.19.0 HGTSNLVL remapbil' # Height of snow level
 ls *${lastDlDateTime}*-WEonG_TMP*.grib2 | sort | parallel 'rename {} 2t TMP remapbil' # Temperature
 # ls *${lastDlDateTime}*-WEonG_WDIR*.grib2 | sort | parallel 'rename {} 10wdir WDIR remapbil' # Wind direction
@@ -182,8 +183,8 @@ ls *_DPT_*.nc | parallel 'K2C {}'
 ##  m/s -> km/hr
 cd ${MAIN}/nc/WSPD
 ls *.nc | parallel 'cnvSpeed {}'
-# cd ${MAIN}/nc/GUST
-# ls *.nc | parallel 'cnvSpeed {}'
+cd ${MAIN}/nc/GUST
+ls *.nc | parallel 'cnvSpeed {}'
 
 ##  HUMIDEX
 cd ${MAIN}/nc/TMP
@@ -218,6 +219,6 @@ parallel 'calcTotalRain {}' ::: `seq 1 $n`
 
 
 cd ${MAIN}
-parallel 'python3 scripts/cnv.py {}' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN HUMIDEX
+parallel 'python3 scripts/cnv.py {}' ::: TMP CONDALPCPN WSPD TOTALRAIN HUMIDEX GUST # CONDASSN
 
 date
