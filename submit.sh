@@ -10,17 +10,13 @@
 export MAIN=$PWD
 export SERVER_IP=taimaz.ddns.net
 # export SERVER_PORT=22
-export SERVER_DIR=/home/taimaz/models/canadaClim/${MODEL}
-
+export SERVER_DIR=/home/taimaz/Projects/Blender/Projects/weather
 
 ##  This file is included in the docker image for reference only.
 data
 docker run --rm -v ./:/app hrdps:latest
 data
 
-
 rsync -ar --exclude '*.nc' --delete ${MAIN}/nc ${SERVER_IP}:${SERVER_DIR}
-# rsync -ar --delete ${MAIN}/data ${SERVER_IP}:${SERVER_DIR}/nc/
-
 
 rm .active
