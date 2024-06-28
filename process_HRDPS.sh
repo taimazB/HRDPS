@@ -221,4 +221,5 @@ parallel 'calcTotalRain {}' ::: `seq 1 $n`
 cd ${MAIN}
 parallel 'python3 scripts/cnv.py {}' ::: TMP CONDALPCPN WSPD TOTALRAIN HUMIDEX GUST # CONDASSN
 
+
 date

@@ -3,3 +3,5 @@
 **/trash/
 ./grib2/
 ./nc/
+./hrdps.tar.gz
+./docker_rebuild.sh

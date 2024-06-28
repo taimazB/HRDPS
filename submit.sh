@@ -7,16 +7,16 @@
 #SBATCH --error=logs/%j.err
 #SBATCH --priority=2001
 
+##  This file is included in the docker image for reference only.
+
 export MAIN=$PWD
 export SERVER_IP=taimaz.ddns.net
 # export SERVER_PORT=22
 export SERVER_DIR=/home/taimaz/Projects/Blender/Projects/weather
 
-##  This file is included in the docker image for reference only.
-data
 docker run --rm -v ./:/app hrdps:latest
-data
 
-rsync -ar --exclude '*.nc' --delete ${MAIN}/nc ${SERVER_IP}:${SERVER_DIR}
+rsync -ar --exclude '*.nc' ${MAIN}/nc ${SERVER_IP}:${SERVER_DIR}
+rm -r ${MAIN}/grib2
 
 rm .active
