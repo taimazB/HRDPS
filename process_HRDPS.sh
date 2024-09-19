@@ -108,6 +108,13 @@ function calcTotalRain {
 }
 export -f calcTotalRain
 
+function calcTotalSnow {
+    i=$1
+    datetime=`ls | head -$i | tail -1 | cut -d_ -f3-4`
+    cdo -O -z zip_1 enssum -chname,CONDASSN,TOTALSNOW `ls | head -$i` ${MAIN}/nc/TOTALSNOW/HRDPS_TOTALSNOW_${datetime}
+}
+export -f calcTotalSnow
+
 function nc2gj {
     f=$1 ##  WITHOUT extension
     levels=$2
@@ -217,9 +224,14 @@ cd ${MAIN}/nc/CONDALPCPN
 n=`ls | wc -l`
 parallel 'calcTotalRain {}' ::: `seq 1 $n`
 
+##  TOTAL SNOW
+mkdir ${MAIN}/nc/TOTALSNOW
+cd ${MAIN}/nc/CONDASSN
+n=`ls | wc -l`
+parallel 'calcTotalSnow {}' ::: `seq 1 $n`
 
 cd ${MAIN}
-parallel 'python3 scripts/cnv.py {}' ::: TMP CONDALPCPN WSPD TOTALRAIN HUMIDEX GUST # CONDASSN
+parallel 'python3 scripts/cnv.py {}' ::: TMP CONDALPCPN CONDASSN WSPD TOTALRAIN TOTALSNOW HUMIDEX GUST
 
 
 date

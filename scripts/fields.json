@@ -203,6 +203,38 @@
         "step": 0.1
     },
     {
+        "name": "TOTALSNOW",
+        "longName":"total snow",
+        "absMin":0,
+        "stops": [
+            0,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100
+        ],
+        "colors": [
+            "#000000",
+            "#ccffff",
+            "#99ffff",
+            "#66ccff",
+            "#3399ff",
+            "#0066ff",
+            "#0033cc",
+            "#000099",
+            "#9933ff",
+            "#9900cc",
+            "#660066"
+        ],
+        "step": 1
+    },
+    {
         "name": "WSPD",
         "longName":"wind",
         "absMin":0,
