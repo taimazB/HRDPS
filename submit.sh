@@ -13,7 +13,10 @@ export MAIN=$PWD
 export SERVER_IP=taimaz.ddns.net
 export SERVER_DIR=/home/taimaz/Projects/Blender/Projects/sialuk/data/models/
 
-docker run --rm -v ./:/app hrdps:latest
+export LOCAL_UID=$(id -u)
+export LOCAL_GID=$(id -g)
+
+docker run --user ${LOCAL_UID}:${LOCAL_GID} --rm -v ./:/app hrdps:latest
 
 rsync -ar --exclude '*.nc' ${MAIN}/nc ${SERVER_DIR}
 rm -r ${MAIN}/grib2
