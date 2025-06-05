@@ -225,7 +225,7 @@ def extractCities(fieldName,lonNC, latNC, dateTimes, var, precision):
             iLat = np.argmin(np.abs(latNC-lat))
             values = []
             for var_t in var:
-                values.append(round(float(var_t[iLat,iLon]), precision))
+                values.append(int(round(float(var_t[iLat,iLon]), precision)))
             df[province][f"city_{id}"] = values
         #
         province_time = (datetime.now() - province_start).total_seconds()
