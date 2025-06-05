@@ -1,17 +1,6 @@
-import numpy as np
-from netCDF4 import Dataset
 # import matplotlib.pyplot as plt
-from scipy import interpolate
-import multiprocessing
 import os
-import imageio
-import math
-from PIL import ImageColor
-from datetime import datetime, timedelta
-from glob import glob
 import pandas as pd
-import itertools
-import pytz
 import sys
 
 
@@ -19,6 +8,7 @@ fieldName = sys.argv[1]
 
 PWD = os.getcwd()
 scriptsDir = "%s/scripts" % PWD
+
 sys.path.insert(0, scriptsDir)
 from functions import *
 
