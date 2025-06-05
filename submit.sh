@@ -19,7 +19,14 @@ export LOCAL_GID=$(id -g)
 docker run --user ${LOCAL_UID}:${LOCAL_GID} --rm -v ./:/app hrdps:latest
 
 cd ${MAIN}/nc
-ls | parallel 'rsync -au {}/images/ ${SERVER_IP}:${SERVER_DIR}/{}/'
+for d in *; do
+    cd ${MAIN}/nc/${d}
+    rm *.nc
+    mv data/cities.json .
+    mv images/* .
+    rm -r data images
+done
+rsync -aru ${MAIN}/nc/ ${SERVER_IP}:${SERVER_DIR}/
 
 cd ${MAIN}
 rm -r ${MAIN}/grib2 ${MAIN}/nc
