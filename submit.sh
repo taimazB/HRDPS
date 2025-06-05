@@ -18,7 +18,10 @@ export LOCAL_GID=$(id -g)
 
 docker run --user ${LOCAL_UID}:${LOCAL_GID} --rm -v ./:/app hrdps:latest
 
-rsync -ar --exclude '*.nc' ${MAIN}/nc ${SERVER_DIR}
-rm -r ${MAIN}/grib2
+cd ${MAIN}/nc
+ls | parallel 'rsync -au {}/images/ ${SERVER_IP}:${SERVER_DIR}/{}/'
+
+cd ${MAIN}
+rm -r ${MAIN}/grib2 ${MAIN}/nc
 
 rm .active
