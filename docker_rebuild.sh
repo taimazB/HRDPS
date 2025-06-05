@@ -1,2 +1,3 @@
-docker build -t hrdps:latest .
-docker save hrdps:latest | gzip > hrdps.tar.gz
+MODEL=hrdps
+docker build -t ${MODEL}:latest .
+docker save ${MODEL}:latest | gzip > ${MODEL}.tar.gz
