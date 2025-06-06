@@ -119,7 +119,7 @@ def genImage(item):
     start_time = datetime.now()
     logger.info(f"Starting genImage processing at {start_time}")
     #
-    lonNC, latNC, var, fieldName, varMin, varMax, step, precision = item
+    lonNC, latNC, var, fieldName, varMin, varMax, step = item
     logger.info(f"Processing field: {fieldName}, var shape: {var.shape}")
     #
     #
@@ -203,7 +203,7 @@ def datetimes(dateTimes, timeZone):
     return dates_local, times_local
 
 
-def extractCities(fieldName,lonNC, latNC, dateTimes, var, precision):
+def extractCities(fieldName,lonNC, latNC, dateTimes, var):
     logger = logging.getLogger(__name__)
     logger.info(f"Starting cities extraction for field: {fieldName}")
     #
@@ -225,7 +225,7 @@ def extractCities(fieldName,lonNC, latNC, dateTimes, var, precision):
             iLat = np.argmin(np.abs(latNC-lat))
             values = []
             for var_t in var:
-                values.append(int(round(float(var_t[iLat,iLon]), precision)))
+                values.append(int(round(float(var_t[iLat,iLon]))))
             df[province][f"city_{id}"] = values
         #
         province_time = (datetime.now() - province_start).total_seconds()
@@ -247,10 +247,9 @@ def process(field):
     stops = field['stops'].iloc[0]
     colors = field['colors'].iloc[0]
     step = field['step'].iloc[0]
-    precision = field['precision'].iloc[0]
     #
     logger.info(f"Starting process for field: {fieldName}")
-    logger.debug(f"Field parameters - stops: {stops}, colors: {colors}, step: {step}, precision: {precision}")
+    logger.debug(f"Field parameters - stops: {stops}, colors: {colors}, step: {step}")
     #
     # Create directories and merge files
     logger.info("Creating directories and merging NetCDF files")
@@ -313,11 +312,11 @@ def process(field):
     #
     # Extract cities data
     logger.info("Extracting cities data")
-    extractCities(fieldName, lonNC, latNC, dateTimes_interp, varInterp, precision)
+    extractCities(fieldName, lonNC, latNC, dateTimes_interp, varInterp)
     #
     # Generate images
     logger.info("Starting image generation")
-    genImage((lonNC, latNC, varInterp, fieldName, varMin, varMax, step, precision))
+    genImage((lonNC, latNC, varInterp, fieldName, varMin, varMax, step))
     #
     total_time = (datetime.now() - start_time).total_seconds()
     logger.info(f"Process completed for field {fieldName} in {total_time:.2f}s")
