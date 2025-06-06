@@ -6,29 +6,11 @@ export MAIN=$PWD
 
 ############################################################################
 
-# source ./configs.sh
-
-lasts=()
-for hr in 00 06 12 18; do
-    last=`curl -s ${dlLink}/${hr}/048/ | grep grib2 | sed 's/.*"\(2.*\.grib2\)".*/\1/' | tail -1 | cut -d_ -f1`
-    lasts+=(${last})
-done
-
-export lastAvailDateTime=`printf '%s\n' "${lasts[@]}"|sort | tail -1`
-lastDlDateTime=`cat ${MAIN}/.lastDlDateTime`
-
-if [[ -e ${MAIN}/.active ]] || [[ ${lastAvailDateTime} == ${lastDlDateTime} ]] || [[ -z ${lastAvailDateTime} ]] ; then
-    exit
-fi
-
-touch ${MAIN}/.active
-# rm -r ${MAIN}/nc 2>/dev/null
-
 export lastHour=`echo ${lastAvailDateTime} | sed 's/.*T\(.*\)Z/\1/'`
 
 # rm -r ${MAIN}/grib2 2>/dev/null ##  DO NOT REMOVE.  IF DL FAILS DUE TO LACK OF FILES, WANT TO CONTINUE LATER.
-mkdir ${MAIN}/grib2
-cd ${MAIN}/grib2
+mkdir ${MAIN}/data/${MODEL}_grib2
+cd ${MAIN}/data/${MODEL}_grib2
 
 # vars=(-WEonG_TMP_Sfc -WEonG_CONDARAIN_Sfc -WEonG_CONDASNOW_Sfc -WEonG_CONDICEP_Sfc -WEonG_GUST_Sfc -WEonG_WSPD_Sfc -WEonG_WDIR_Sfc -WEonG_DPT_Sfc _TCDC_Sfc _PRMSL_MSL _WEARN_Sfc _WEASN_Sfc -WEonG_CHARPCPN_Sfc -WEonG_DMNTPCPNTYPE_Sfc -WEonG_PCPNTYPE_Sfc -WEonG_SCNDPCPNTYPE_Sfc -WEonG_SKSTATE_Sfc -WEonG_TPCPNINTSTI_Sfc _RH_AGL-2m)
 # vars=(-WEonG_TMP_Sfc -WEonG_GUST_Sfc -WEonG_WSPD_Sfc -WEonG_WDIR_Sfc -WEonG_DPT_Sfc _TCDC_Sfc _PRMSL_MSL _WEARN_Sfc _WEASN_Sfc -WEonG_CHARPCPN_Sfc -WEonG_DMNTPCPNTYPE_Sfc -WEonG_PCPNTYPE_Sfc -WEonG_SCNDPCPNTYPE_Sfc -WEonG_SKSTATE_Sfc -WEonG_TPCPNINTSTI_Sfc _RH_AGL-2m)
@@ -52,7 +34,5 @@ for h in {001..048}; do
     fi
 done
 
-echo ${lastAvailDateTime} > ${MAIN}/.lastDlDateTime
-
 cd ${MAIN}
-sbatch submit.sh
+bash process_HRDPS.sh ${lastAvailDateTime}

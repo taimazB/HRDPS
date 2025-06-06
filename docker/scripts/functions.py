@@ -1,21 +1,15 @@
 import numpy as np
 from netCDF4 import Dataset
 # import matplotlib.pyplot as plt
-from scipy import interpolate
 import multiprocessing
 import os
 import imageio
-import math
 from PIL import ImageColor
 from datetime import datetime, timedelta
 from glob import glob
 import pandas as pd
-import itertools
 import pytz
-from PIL import Image, ImageDraw, ImageFont
 import json
-from shapely.geometry import shape, Point
-from geopy import distance
 from pathlib import Path
 import logging
 
@@ -24,7 +18,6 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(name)s: %(message)s'
 )
 
-MODEL = 'HRDPS'
 
 def colorRange(color1, color2, n):
     colors = []
@@ -120,7 +113,7 @@ def genImage(item):
     start_time = datetime.now()
     logger.info(f"Starting genImage processing at {start_time}")
     #
-    lonNC, latNC, var, fieldName, varMin, varMax, step = item
+    MODEL,var, fieldName, varMin, varMax, step = item
     logger.info(f"Processing field: {fieldName}, var shape: {var.shape}")
     #
     #
@@ -159,7 +152,7 @@ def genImage(item):
     # Prepare items for parallel processing
     items = []
     for i, varStep in enumerate(var):
-        items.append((i, varStep, offset, varMin, varMax, step, fieldName, allColors))
+        items.append((MODEL,i, varStep, offset, varMin, varMax, step, fieldName, allColors))
     #
     # Use multiprocessing to process images in parallel
     with multiprocessing.Pool() as pool:
@@ -175,7 +168,7 @@ def genImage(item):
 
 
 def process_single_image(item):
-    i, varStep, offset, varMin, varMax, step, fieldName, allColors = item
+    MODEL, i, varStep, offset, varMin, varMax, step, fieldName, allColors = item
     #
     varStep = varStep.copy()  # Make a copy to avoid modifying original
     varStep += offset # TO PRESERVE PROVINCE BOUNDARIES FOR FIELDS LIKE RAIN AND SNOW
@@ -190,7 +183,7 @@ def process_single_image(item):
     varColors = allColors[varNewInt].astype(np.uint8)
     #
     # Save image
-    output = f"nc/{fieldName}/images/f{'%03d' % (i+1)}.png"
+    output = f"data/{MODEL}_nc/{fieldName}/images/f{'%03d' % (i+1)}.png"
     imageio.imwrite(output, np.flipud(varColors))
     #
     return i + 1
@@ -204,7 +197,7 @@ def datetimes(dateTimes, timeZone):
     return dates_local, times_local
 
 
-def extractCities(fieldName,lonNC, latNC, dateTimes, var):
+def extractCities(MODEL,fieldName,lonNC, latNC, dateTimes, var):
     logger = logging.getLogger(__name__)
     logger.info(f"Starting cities extraction for field: {fieldName}")
     #
@@ -236,11 +229,11 @@ def extractCities(fieldName,lonNC, latNC, dateTimes, var):
     logger.info(f"Cities extraction completed in {cities_time:.2f}s")
     #
     # Save cities data
-    json.dump(df, open(f'nc/{fieldName}/data/cities.json', 'w'), indent=4)
-    logger.info(f"Cities data saved to nc/{fieldName}/data/cities.json")
+    json.dump(df, open(f'data/{MODEL}_nc/{fieldName}/data/cities.json', 'w'), indent=4)
+    logger.info(f"Cities data saved to data/{MODEL}_nc/{fieldName}/data/cities.json")
 
 
-def process(field):
+def process(MODEL, field):
     logger = logging.getLogger(__name__)
     start_time = datetime.now()
     #
@@ -254,14 +247,14 @@ def process(field):
     #
     # Create directories and merge files
     logger.info("Creating directories and merging NetCDF files")
-    devNull = os.system(f'cdo -O merge nc/{fieldName}/{MODEL}*.nc nc/{fieldName}/all.nc')
-    devNull = os.system(f'mkdir -p nc/{fieldName}/images')
-    devNull = os.system(f'mkdir -p nc/{fieldName}/data')
+    devNull = os.system(f'cdo -O merge data/{MODEL}_nc/{fieldName}/{MODEL}*.nc data/{MODEL}_nc/{fieldName}/all.nc')
+    devNull = os.system(f'mkdir -p data/{MODEL}_nc/{fieldName}/images')
+    devNull = os.system(f'mkdir -p data/{MODEL}_nc/{fieldName}/data')
     #
     # Load NetCDF data
-    logger.info(f"Loading NetCDF data from nc/{fieldName}/all.nc")
+    logger.info(f"Loading NetCDF data from data/{MODEL}_nc/{fieldName}/all.nc")
     nc_start = datetime.now()
-    nc = Dataset(f"nc/{fieldName}/all.nc")
+    nc = Dataset(f"data/{MODEL}_nc/{fieldName}/all.nc")
     var = nc.variables[fieldName][:]
     #
     # latitude, longitude
@@ -270,7 +263,7 @@ def process(field):
     nc_time = (datetime.now() - nc_start).total_seconds()
     #
     # Original dateTimes
-    files = sorted(glob(f'nc/{fieldName}/{MODEL}*.nc'))
+    files = sorted(glob(f'data/{MODEL}_nc/{fieldName}/{MODEL}*.nc'))
     dateTimes = [datetime.strptime('_'.join(Path(f).stem.split('_')[2:]), '%Y%m%d_%H') for f in files]
     #
     logger.info(f"NetCDF data loaded in {nc_time:.2f}s - var shape: {var.shape}, lon range: [{lonNC.min():.2f}, {lonNC.max():.2f}], lat range: [{latNC.min():.2f}, {latNC.max():.2f}]")
@@ -313,11 +306,11 @@ def process(field):
     #
     # Extract cities data
     logger.info("Extracting cities data")
-    extractCities(fieldName, lonNC, latNC, dateTimes_interp, varInterp)
+    extractCities(MODEL,fieldName, lonNC, latNC, dateTimes_interp, varInterp)
     #
     # Generate images
     logger.info("Starting image generation")
-    genImage((lonNC, latNC, varInterp, fieldName, varMin, varMax, step))
+    genImage((MODEL, varInterp, fieldName, varMin, varMax, step))
     #
     total_time = (datetime.now() - start_time).total_seconds()
     logger.info(f"Process completed for field {fieldName} in {total_time:.2f}s")

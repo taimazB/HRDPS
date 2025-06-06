@@ -16,7 +16,8 @@ export SERVER_DIR=/home/taimaz/Projects/Blender/Projects/sialuk/data/models/
 export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
 
-docker run --user ${LOCAL_UID}:${LOCAL_GID} --rm -v ./:/app hrdps:latest
+# docker run --user ${LOCAL_UID}:${LOCAL_GID} --rm -v ./:/app hrdps:latest
+bash ${MAIN}/process_HRDPS.sh
 
 cd ${MAIN}/nc
 for d in *; do
@@ -26,7 +27,8 @@ for d in *; do
     mv images/* .
     rm -r data images
 done
-rsync -aru ${MAIN}/nc/ ${SERVER_IP}:${SERVER_DIR}/
+# rsync -aru ${MAIN}/nc/ ${SERVER_IP}:${SERVER_DIR}/
+rsync -aru ${MAIN}/nc/ ${SERVER_DIR}/
 
 cd ${MAIN}
 rm -r ${MAIN}/grib2 ${MAIN}/nc

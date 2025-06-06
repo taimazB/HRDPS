@@ -4,7 +4,8 @@ import pandas as pd
 import sys
 
 
-fieldName = sys.argv[1]
+MODEL = sys.argv[1]
+fieldName = sys.argv[2]
 
 PWD = os.getcwd()
 scriptsDir = "%s/scripts" % PWD
@@ -13,7 +14,7 @@ sys.path.insert(0, scriptsDir)
 from functions import *
 
 fields = pd.read_json('scripts/fields.json')
-process(fields[fields['name']==fieldName])
+process(MODEL, fields[fields['name']==fieldName])
 
 
 

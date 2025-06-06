@@ -4,7 +4,10 @@ export MAIN=$PWD
 export MODEL=HRDPS
 
 ##  FIND LATEST MODEL RUN
-lastDlDateTime=$(cat ${MAIN}/.lastDlDateTime)
+lastAvailDateTime=$1
+
+export GRIB2_DIR=${MAIN}/data/${MODEL}_grib2
+export NC_DIR=${MAIN}/data/${MODEL}_nc
 
 ############################################################################
 ##  FUNCTIONS
@@ -18,11 +21,11 @@ function rename {
     date=$(date -d $(cdo -s showtimestamp $f) +%Y%m%d_%H)
     out=${MODEL}_${varNew}_${date}
 
-    mkdir -p ${MAIN}/nc/${varNew} 2>/dev/null
+    mkdir -p ${MAIN}/data/${MODEL}_nc/${varNew} 2>/dev/null
 
-    cdo -f nc4 copy -${remapType},${MAIN}/scripts/grid.txt -chname,${varOrgIn},${varNew} $f ${MAIN}/nc/${varNew}/${out}.nc.1
-    cdo -z zip_1 -chname,lat,latitude -chname,lon,longitude ${MAIN}/nc/${varNew}/${out}.nc.1 ${MAIN}/nc/${varNew}/${out}.nc
-    rm ${MAIN}/nc/${varNew}/${out}.nc.* 2>/dev/null
+    cdo -f nc4 copy -${remapType},${MAIN}/scripts/grid.txt -chname,${varOrgIn},${varNew} $f ${MAIN}/data/${MODEL}_nc/${varNew}/${out}.nc.1
+    cdo -z zip_1 -chname,lat,latitude -chname,lon,longitude ${MAIN}/data/${MODEL}_nc/${varNew}/${out}.nc.1 ${MAIN}/data/${MODEL}_nc/${varNew}/${out}.nc
+    rm ${MAIN}/data/${MODEL}_nc/${varNew}/${out}.nc.* 2>/dev/null
 }
 export -f rename
 
@@ -86,7 +89,7 @@ function merge {
     directionFile=$(echo $speedFile | sed "s/_windSpeed_/_windDirection_/")
     windFile=$(echo $speedFile | sed "s/_windSpeed_/_wind_/")
 
-    cdo merge ${MAIN}/nc/windSpeed/${speedFile} ${MAIN}/nc/windDirection/${directionFile} ${MAIN}/nc/wind/${windFile}
+    cdo merge ${NC_DIR}/windSpeed/${speedFile} ${NC_DIR}/windDirection/${directionFile} ${NC_DIR}/wind/${windFile}
 }
 export -f merge
 
@@ -95,23 +98,23 @@ function calcHumidex {
     dewFile=$(echo $tFile | sed "s/_TMP_/_DPT_/")
     humidexFile=$(echo $tFile | sed "s/_TMP_/_HUMIDEX_/")
 
-    cdo -f nc merge ${MAIN}/nc/TMP/${tFile} ${MAIN}/nc/DPT/${dewFile} ${MAIN}/nc/HUMIDEX/${humidexFile}
-    ncap2 -O -s 'HUMIDEX=TMP + (3.39556)*2.71828^(19.8336 - 5417.75/(DPT+273.15)) - 5.5556' ${MAIN}/nc/HUMIDEX/${humidexFile} ${MAIN}/nc/HUMIDEX/${humidexFile}
-    ncks -O -v HUMIDEX ${MAIN}/nc/HUMIDEX/${humidexFile} ${MAIN}/nc/HUMIDEX/${humidexFile}
+    cdo -f nc merge ${NC_DIR}/TMP/${tFile} ${NC_DIR}/DPT/${dewFile} ${NC_DIR}/HUMIDEX/${humidexFile}
+    ncap2 -O -s 'HUMIDEX=TMP + (3.39556)*2.71828^(19.8336 - 5417.75/(DPT+273.15)) - 5.5556' ${NC_DIR}/HUMIDEX/${humidexFile} ${NC_DIR}/HUMIDEX/${humidexFile}
+    ncks -O -v HUMIDEX ${NC_DIR}/HUMIDEX/${humidexFile} ${NC_DIR}/HUMIDEX/${humidexFile}
 }
 export -f calcHumidex
 
 function calcTotalRain {
     i=$1
     datetime=`ls | head -$i | tail -1 | cut -d_ -f3-4`
-    cdo -O -z zip_1 enssum -chname,CONDALPCPN,TOTALRAIN `ls | head -$i` ${MAIN}/nc/TOTALRAIN/HRDPS_TOTALRAIN_${datetime}
+    cdo -O -z zip_1 enssum -chname,CONDALPCPN,TOTALRAIN `ls | head -$i` ${NC_DIR}/TOTALRAIN/HRDPS_TOTALRAIN_${datetime}
 }
 export -f calcTotalRain
 
 function calcTotalSnow {
     i=$1
     datetime=`ls | head -$i | tail -1 | cut -d_ -f3-4`
-    cdo -O -z zip_1 enssum -chname,CONDASSN,TOTALSNOW `ls | head -$i` ${MAIN}/nc/TOTALSNOW/HRDPS_TOTALSNOW_${datetime}
+    cdo -O -z zip_1 enssum -chname,CONDASSN,TOTALSNOW `ls | head -$i` ${NC_DIR}/TOTALSNOW/HRDPS_TOTALSNOW_${datetime}
 }
 export -f calcTotalSnow
 
@@ -129,18 +132,18 @@ export -f nc2gj
 function nc2pbf {
     dir=$1
     export levels=$2
-    mkdir ${MAIN}/nc/${dir}/geojson
-    cd ${MAIN}/nc/${dir}
+    mkdir ${NC_DIR}/${dir}/geojson
+    cd ${NC_DIR}/${dir}
     ls HRDPS_*.nc | xargs -I{} basename {} .nc | parallel 'nc2gj {} "${levels}"'
 
-    cd ${MAIN}/nc/${dir}/geojson
+    cd ${NC_DIR}/${dir}/geojson
     python3 ~/scripts/mergeGJ.py
 
     ##  -pC: Don't compress (mapbox doesn't like it)
     ##  -pK: Don't skip tiles larger than 500K.
-    tippecanoe -pC -pk -Z3 -z8 -l contour --drop-densest-as-needed merged.geojson -e ${MAIN}/nc/${dir}/tiles
+    tippecanoe -pC -pk -Z3 -z8 -l contour --drop-densest-as-needed merged.geojson -e ${NC_DIR}/${dir}/tiles
     cd ${MAIN}
-    rm -r ${MAIN}/nc/${dir}/geojson
+    rm -r ${NC_DIR}/${dir}/geojson
 }
 export -f nc2pbf
 
@@ -149,9 +152,9 @@ export -f nc2pbf
 ############################################################################
 
 ##  GRIB2 -> NC
-rm -r ${MAIN}/nc 2>/dev/null
-mkdir ${MAIN}/nc
-cd ${MAIN}/grib2
+rm -r ${NC_DIR} 2>/dev/null
+mkdir ${NC_DIR}
+cd ${GRIB2_DIR}
 
 ##  RENAME FILES FOR TILE GENERATION
 # ls *${lastDlDateTime}*-WEonG_PROBFZRA*.grib2 | sort | parallel 'rename {} cfrzr PROBFZRA remapbil' # Probability of freezing rain
@@ -182,21 +185,21 @@ ls *${lastDlDateTime}*-WEonG_WSPD*.grib2 | sort | parallel 'rename {} 10si WSPD 
 # ls *${lastDlDateTime}*_RH_AGL-2m*.grib2 | sort | parallel 'rename {} 2r RH remapbil' # 2m relative humidity
 
 ##  K -> C
-cd ${MAIN}/nc/TMP
+cd ${NC_DIR}/TMP
 ls *_TMP_*.nc | parallel 'K2C {}'
-cd ${MAIN}/nc/DPT
+cd ${NC_DIR}/DPT
 ls *_DPT_*.nc | parallel 'K2C {}'
 
 ##  m/s -> km/hr
-cd ${MAIN}/nc/WSPD
+cd ${NC_DIR}/WSPD
 ls *.nc | parallel 'cnvSpeed {}'
 # cd ${MAIN}/nc/GUST
 # ls *.nc | parallel 'cnvSpeed {}'
 
-##  HUMIDEX
-cd ${MAIN}/nc/TMP
-mkdir -p ${MAIN}/nc/HUMIDEX
-ls HRDPS*.nc | parallel 'calcHumidex {}'
+# ##  HUMIDEX
+# cd ${NC_DIR}/TMP
+# mkdir -p ${NC_DIR}/HUMIDEX
+# ls HRDPS*.nc | parallel 'calcHumidex {}'
 
 # ##  Pa -> hPa
 # cd ${MAIN}/nc/PRMSL
@@ -204,7 +207,7 @@ ls HRDPS*.nc | parallel 'calcHumidex {}'
 
 ## m -> mm
 for d in CONDALPCPN; do # CONDAFZPCPN CONDAPCPN
-    cd ${MAIN}/nc/$d
+    cd ${NC_DIR}/$d
     ls *.nc | parallel 'cnvMmm {}'
 done
 
@@ -215,13 +218,13 @@ done
 # done
 
 ##  REMOVE UNWANTED DIMENSIONS
-cd ${MAIN}/nc
+cd ${NC_DIR}
 find . -name *.nc | parallel 'removeDims {}'
 
 ##  TOTAL RAIN
-mkdir ${MAIN}/nc/TOTALRAIN
-cd ${MAIN}/nc/CONDALPCPN
-n=`ls | wc -l`
+mkdir ${NC_DIR}/TOTALRAIN
+cd ${NC_DIR}/CONDALPCPN
+n=`ls HRDPS*.nc | wc -l`
 parallel 'calcTotalRain {}' ::: `seq 1 $n`
 
 ##  TOTAL SNOW
@@ -231,7 +234,8 @@ parallel 'calcTotalRain {}' ::: `seq 1 $n`
 # parallel 'calcTotalSnow {}' ::: `seq 1 $n`
 
 cd ${MAIN}
-parallel 'python3 scripts/cnv.py {}' ::: TMP CONDALPCPN WSPD TOTALRAIN HUMIDEX  # CONDASSN TOTALSNOW GUST
-
+for field in TMP CONDALPCPN WSPD TOTALRAIN; do # HUMIDEX CONDASSN TOTALSNOW GUST
+    python3 scripts/cnv.py ${MODEL} ${field}
+done
 
 date
