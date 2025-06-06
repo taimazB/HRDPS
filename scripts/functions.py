@@ -254,7 +254,7 @@ def process(field):
     #
     # Create directories and merge files
     logger.info("Creating directories and merging NetCDF files")
-    devNull = os.system(f'cdo -O merge nc/{fieldName}/${MODEL}*.nc nc/{fieldName}/all.nc')
+    devNull = os.system(f'cdo -O merge nc/{fieldName}/{MODEL}*.nc nc/{fieldName}/all.nc')
     devNull = os.system(f'mkdir -p nc/{fieldName}/images')
     devNull = os.system(f'mkdir -p nc/{fieldName}/data')
     #
@@ -270,7 +270,7 @@ def process(field):
     nc_time = (datetime.now() - nc_start).total_seconds()
     #
     # Original dateTimes
-    files = sorted(glob(f'nc/{fieldName}/${MODEL}*.nc'))
+    files = sorted(glob(f'nc/{fieldName}/{MODEL}*.nc'))
     dateTimes = [datetime.strptime('_'.join(Path(f).stem.split('_')[2:]), '%Y%m%d_%H') for f in files]
     #
     logger.info(f"NetCDF data loaded in {nc_time:.2f}s - var shape: {var.shape}, lon range: [{lonNC.min():.2f}, {lonNC.max():.2f}], lat range: [{latNC.min():.2f}, {latNC.max():.2f}]")
