@@ -1,5 +1,3 @@
-##  This file is included in the docker image for reference only.
-
 #!/bin/bash
 export dlLink="https://dd.weather.gc.ca/model_hrdps/continental/2.5km"
 export MAIN=$PWD
@@ -9,7 +7,7 @@ export MAIN=$PWD
 export lastHour=`echo ${lastAvailDateTime} | sed 's/.*T\(.*\)Z/\1/'`
 
 # rm -r ${MAIN}/grib2 2>/dev/null ##  DO NOT REMOVE.  IF DL FAILS DUE TO LACK OF FILES, WANT TO CONTINUE LATER.
-mkdir ${MAIN}/data/${MODEL}_grib2
+mkdir -p ${MAIN}/data/${MODEL}_grib2
 cd ${MAIN}/data/${MODEL}_grib2
 
 # vars=(-WEonG_TMP_Sfc -WEonG_CONDARAIN_Sfc -WEonG_CONDASNOW_Sfc -WEonG_CONDICEP_Sfc -WEonG_GUST_Sfc -WEonG_WSPD_Sfc -WEonG_WDIR_Sfc -WEonG_DPT_Sfc _TCDC_Sfc _PRMSL_MSL _WEARN_Sfc _WEASN_Sfc -WEonG_CHARPCPN_Sfc -WEonG_DMNTPCPNTYPE_Sfc -WEonG_PCPNTYPE_Sfc -WEonG_SCNDPCPNTYPE_Sfc -WEonG_SKSTATE_Sfc -WEonG_TPCPNINTSTI_Sfc _RH_AGL-2m)

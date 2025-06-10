@@ -18,6 +18,7 @@ if [[ -e ${MAIN}/.active ]] || [[ ${lastAvailDateTime} == ${lastDlDateTime} ]] |
 fi
 
 touch ${MAIN}/.active
+
 ##########################################################################
 
 
@@ -35,8 +36,8 @@ for d in *; do
     mv images/* .
     rm -r data images
 done
-# rsync -aru ${MAIN}/nc/ ${SERVER_IP}:${SERVER_DIR}/
-rsync -aru /tmp/${MODEL}_nc/ ${SERVER_DIR}/
+rsync -aru /tmp/${MODEL}_nc/ ${SERVER_IP}:${SERVER_DIR}/ || exit 1
+# rsync -aru /tmp/${MODEL}_nc/ ${SERVER_DIR}/
 
 cd ${MAIN}
 rm -r /tmp/${MODEL}_grib2 /tmp/${MODEL}_nc
