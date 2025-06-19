@@ -30,7 +30,7 @@ def colorRange(color1, color2, n):
 
 
 def genColors(stops, colors, step):
-    allColors = np.array([[0, 0, 0, 255]])
+    allColors = np.array([[0, 0, 0, 0]])
     for i in np.arange(len(stops) - 1):
         minStop = float(stops[i])
         minColor = colors[i]

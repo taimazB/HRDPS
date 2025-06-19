@@ -26,6 +26,11 @@ export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
 
 docker run --user ${LOCAL_UID}:${LOCAL_GID} --rm -v /tmp:/app/data -e lastAvailDateTime=${lastAvailDateTime} hrdps:latest
+if [[ $? -ne 0 ]]; then
+    echo "##  Docker run failed"
+    rm ${MAIN}/.active
+    exit 1
+fi
 
 
 cd /tmp/${MODEL}_nc

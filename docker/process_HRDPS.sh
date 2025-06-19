@@ -170,40 +170,45 @@ cd ${GRIB2_DIR}
 # ls *${lastDlDateTime}*-WEonG_PROBTSOCRNC*.grib2 | sort | parallel 'rename {} tstm PROBTSOCRNC remapbil' # Probability of thunderstorm occurrence
 # ls *${lastDlDateTime}*-WEonG_PROBSNSQ*.grib2 | sort | parallel 'rename {} param36.19.0 PROBSNSQ remapbil' # Probability of snow squalls
 ls *${lastDlDateTime}*-WEonG_CONDALPCPN*.grib2 | sort | parallel 'rename {} param158.1.0 CONDALPCPN remapbil' # Conditional amount of liquid precipitation
-# ls *${lastDlDateTime}*-WEonG_CONDASSN*.grib2 | sort | parallel 'rename {} param156.1.0 CONDASSN remapbil' # Conditional amount of solid snow
+ls *${lastDlDateTime}*-WEonG_CONDASSN*.grib2 | sort | parallel 'rename {} param156.1.0 CONDASSN remapbil' # Conditional amount of solid snow
 # ls *${lastDlDateTime}*-WEonG_CONDAPL*.grib2 | sort | parallel 'rename {} param157.1.0 CONDAPL remapbil' # Conditional amount of solid ice pellets
 # ls *${lastDlDateTime}*-WEonG_CONDAFZPCPN*.grib2 | sort | parallel 'rename {} param95.1.0 CONDAFZPCPN remapbil' # Conditional amount of freezing precipitation
 # ls *${lastDlDateTime}*-WEonG_CONDAPCPN*.grib2 | sort | parallel 'rename {} param159.1.0 CONDAPCPN remapbil' # Conditional amount of precipitation
-ls *${lastDlDateTime}*-WEonG_DPT*.grib2 | sort | parallel 'rename {} 2d DPT remapbil' # Dew point temperature
-# ls *${lastDlDateTime}*-WEonG_GUST*.grib2 | sort | parallel 'rename {} i10fg GUST remapbil' # Gust
+# ls *${lastDlDateTime}*-WEonG_DPT*.grib2 | sort | parallel 'rename {} 2d DPT remapbil' # Dew point temperature
+ls *${lastDlDateTime}*-WEonG_GUST*.grib2 | sort | parallel 'rename {} i10fg GUST remapbil' # Gust
 # ls *${lastDlDateTime}*-WEonG_HGTSNLVL*.grib2 | sort | parallel 'rename {} param40.19.0 HGTSNLVL remapbil' # Height of snow level
 ls *${lastDlDateTime}*-WEonG_TMP*.grib2 | sort | parallel 'rename {} 2t TMP remapbil' # Temperature
 # ls *${lastDlDateTime}*-WEonG_WDIR*.grib2 | sort | parallel 'rename {} 10wdir WDIR remapbil' # Wind direction
 ls *${lastDlDateTime}*-WEonG_WSPD*.grib2 | sort | parallel 'rename {} 10si WSPD remapbil' # Wind speed
-# ls *${lastDlDateTime}*TCDC*.grib2 | sort | parallel 'rename {} param1.6.0 TCDC remapbil' # Total cloud cover
-# ls *${lastDlDateTime}*PRMSL*.grib2 | sort | parallel 'rename {} prmsl PRMSL remapbil' # Pressure reduced to MSL
-# ls *${lastDlDateTime}*_RH_AGL-2m*.grib2 | sort | parallel 'rename {} 2r RH remapbil' # 2m relative humidity
+ls *${lastDlDateTime}*TCDC*.grib2 | sort | parallel 'rename {} param1.6.0 TCDC remapbil' # Total cloud cover
+ls *${lastDlDateTime}*PRMSL*.grib2 | sort | parallel 'rename {} prmsl PRMSL remapbil' # Pressure reduced to MSL
+ls *${lastDlDateTime}*_RH_AGL-2m*.grib2 | sort | parallel 'rename {} 2r RH remapbil' # 2m relative humidity
+ls *${lastDlDateTime}*_WCHIL*.grib2 | sort | parallel 'rename {} wcf WCHIL remapbil' # wind chill
+ls *${lastDlDateTime}*_Humidex*.grib2 | sort | parallel 'rename {} hmdx Humidex remapbil' # humidex
+ls *${lastDlDateTime}*_SNOD*.grib2 | sort | parallel 'rename {} sde SNOD remapbil' # snow depth
 
 ##  K -> C
 cd ${NC_DIR}/TMP
 ls *_TMP_*.nc | parallel 'K2C {}'
-cd ${NC_DIR}/DPT
-ls *_DPT_*.nc | parallel 'K2C {}'
+cd ${NC_DIR}/WCHIL
+ls *_WCHIL_*.nc | parallel 'K2C {}'
+# cd ${NC_DIR}/DPT
+# ls *_DPT_*.nc | parallel 'K2C {}'
 
 ##  m/s -> km/hr
 cd ${NC_DIR}/WSPD
 ls *.nc | parallel 'cnvSpeed {}'
-# cd ${MAIN}/nc/GUST
-# ls *.nc | parallel 'cnvSpeed {}'
+cd ${NC_DIR}/GUST
+ls *.nc | parallel 'cnvSpeed {}'
 
 # ##  HUMIDEX
 # cd ${NC_DIR}/TMP
 # mkdir -p ${NC_DIR}/HUMIDEX
 # ls HRDPS*.nc | parallel 'calcHumidex {}'
 
-# ##  Pa -> hPa
-# cd ${MAIN}/nc/PRMSL
-# ls *.nc | parallel 'cnvPressure {}'
+##  Pa -> hPa
+cd ${NC_DIR}/PRMSL
+ls *.nc | parallel 'cnvPressure {}'
 
 ## m -> mm
 for d in CONDALPCPN; do # CONDAFZPCPN CONDAPCPN
@@ -212,10 +217,10 @@ for d in CONDALPCPN; do # CONDAFZPCPN CONDAPCPN
 done
 
 ## m -> cm
-# for d in CONDASSN; do # CONDAPL
-#     cd ${MAIN}/nc/$d
-#     ls *.nc | parallel 'cnvMcm {}'
-# done
+for d in CONDASSN SNOD; do
+    cd ${NC_DIR}/$d
+    ls *.nc | parallel 'cnvMcm {}'
+done
 
 ##  REMOVE UNWANTED DIMENSIONS
 cd ${NC_DIR}
@@ -228,14 +233,12 @@ n=`ls HRDPS*.nc | wc -l`
 parallel 'calcTotalRain {}' ::: `seq 1 $n`
 
 ##  TOTAL SNOW
-# mkdir ${MAIN}/nc/TOTALSNOW
-# cd ${MAIN}/nc/CONDASSN
-# n=`ls | wc -l`
-# parallel 'calcTotalSnow {}' ::: `seq 1 $n`
+mkdir ${NC_DIR}/TOTALSNOW
+cd ${NC_DIR}/CONDASSN
+n=`ls | wc -l`
+parallel 'calcTotalSnow {}' ::: `seq 1 $n`
 
 cd ${MAIN}
-for field in TMP CONDALPCPN WSPD TOTALRAIN; do # HUMIDEX CONDASSN TOTALSNOW GUST
-    python3 scripts/cnv.py ${MODEL} ${field}
-done
+parallel -j 3 "python3 scripts/cnv.py ${MODEL} {}" ::: CONDALPCPN  CONDASSN  GUST  Humidex  PRMSL  RH  SNOD  TCDC  TMP  TOTALRAIN  TOTALSNOW  WCHIL  WSPD
 
 date
