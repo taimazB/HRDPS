@@ -48,4 +48,4 @@ cd ${MAIN}
 rm -r /tmp/${MODEL}_grib2 /tmp/${MODEL}_nc
 
 echo ${lastAvailDateTime} > .lastDlDateTime
-rm .active
+rm ${MAIN}/.active
