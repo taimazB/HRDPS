@@ -1,5 +1,5 @@
 #!/bin/bash
-export dlLink="https://dd.weather.gc.ca/model_hrdps/continental/2.5km"
+export dlLink="https://dd.weather.gc.ca/today/model_hrdps/continental/2.5km"
 export MAIN=$PWD
 
 ############################################################################

@@ -3,7 +3,7 @@ source ./configs.sh
 
 ##########################################################################
 ## CHECK LAST DL DATE TIME vs. AVAILABLE DATE TIME
-export dlLink="https://dd.weather.gc.ca/model_hrdps/continental/2.5km"
+export dlLink="https://dd.weather.gc.ca/today/model_hrdps/continental/2.5km"
 lasts=()
 for hr in 00 06 12 18; do
     last=`curl -s ${dlLink}/${hr}/048/ | grep grib2 | sed 's/.*"\(2.*\.grib2\)".*/\1/' | tail -1 | cut -d_ -f1`
