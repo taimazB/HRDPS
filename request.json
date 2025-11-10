@@ -1,0 +1,44 @@
+{
+  "input": {
+    "provinces": [
+      {
+        "shortName": "ON",
+        "longName": "Ontario",
+        "hashtag": "onwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
+        "shortName": "AB",
+        "longName": "Alberta",
+        "hashtag": "abwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      }
+    ],
+    "render_fields": [
+      "CONDALPCPN",
+      "CONDASSN",
+      "GUST",
+      "Humidex",
+      "PRMSL",
+      "RH",
+      "SNOD",
+      "TCDC",
+      "TMP",
+      "TOTALRAIN",
+      "TOTALSNOW",
+      "WCHIL",
+      "WSPD"
+    ],
+    "max_parallel_jobs": 6
+  }
+}

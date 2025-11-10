@@ -41,8 +41,27 @@ for d in *; do
     mv images/* .
     rm -r data images
 done
-rsync -aru /tmp/${MODEL}_nc/ ${SERVER_IP}:${SERVER_DIR}/ || exit 1
-# rsync -aru /tmp/${MODEL}_nc/ ${SERVER_DIR}/
+
+##########################################################################
+cd ${MAIN}
+# rsync -aru /tmp/${MODEL}_nc/ ${SERVER_IP}:${SERVER_DIR}/ || exit 1
+
+function copy(){
+    FIELD=$1
+    aws s3 cp /tmp/${MODEL}_nc/$FIELD/ s3://17vholnwjv/models/$FIELD/ --recursive --region eu-ro-1 --endpoint-url https://s3api-eu-ro-1.runpod.io
+}
+export -f copy
+
+parallel copy ::: CONDALPCPN  CONDASSN  GUST  Humidex  PRMSL  RH  SNOD  TCDC  TMP  TOTALRAIN  TOTALSNOW  WCHIL  WSPD
+
+runpod_url="https://api.runpod.ai/v2/i6ljz738erqffa/run"
+# Load request.json in to REQUEST variable
+REQUEST=$(<./request.json)
+curl -X POST https://api.runpod.ai/v2/i6ljz738erqffa/run \
+    -H 'Content-Type: application/json' \
+    -H "Authorization: Bearer ${API_KEY}" \
+    -d "$REQUEST"
+
 
 cd ${MAIN}
 rm -r /tmp/${MODEL}_grib2 /tmp/${MODEL}_nc
