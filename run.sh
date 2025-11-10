@@ -17,6 +17,11 @@ if [[ -e ${MAIN}/.active ]] || [[ ${lastAvailDateTime} == ${lastDlDateTime} ]] |
     exit
 fi
 
+# Run only 06Z updates
+if [[ ${lastAvailDateTime} != *"06Z" ]]; then
+    exit
+fi
+
 touch ${MAIN}/.active
 
 ##########################################################################
@@ -54,6 +59,12 @@ export -f copy
 
 parallel copy ::: CONDALPCPN  CONDASSN  GUST  Humidex  PRMSL  RH  SNOD  TCDC  TMP  TOTALRAIN  TOTALSNOW  WCHIL  WSPD
 
+if [[ $? -ne 0 ]]; then
+    echo "##  Rsync to server failed"
+    rm ${MAIN}/.active
+    exit 1
+fi
+
 runpod_url="https://api.runpod.ai/v2/i6ljz738erqffa/run"
 # Load request.json in to REQUEST variable
 REQUEST=$(<./request.json)
@@ -62,6 +73,7 @@ curl -X POST https://api.runpod.ai/v2/i6ljz738erqffa/run \
     -H "Authorization: Bearer ${API_KEY}" \
     -d "$REQUEST"
 
+##########################################################################
 
 cd ${MAIN}
 rm -r /tmp/${MODEL}_grib2 /tmp/${MODEL}_nc
