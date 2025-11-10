@@ -2,6 +2,61 @@
   "input": {
     "provinces": [
       {
+        "shortName": "N",
+        "longName": "Newfoundland",
+        "hashtag": "nlwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
+        "shortName": "L",
+        "longName": "Labrador",
+        "hashtag": "nlwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
+        "shortName": "NS",
+        "longName": "Nova Scotia",
+        "hashtag": "nswx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
+        "shortName": "NB",
+        "longName": "New Brunswick",
+        "hashtag": "nbwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
+        "shortName": "QC",
+        "longName": "Quebec",
+        "hashtag": "qcwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
         "shortName": "ON",
         "longName": "Ontario",
         "hashtag": "onwx",
@@ -13,9 +68,42 @@
         ]
       },
       {
+        "shortName": "MB",
+        "longName": "Manitoba",
+        "hashtag": "mbwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
+        "shortName": "SK",
+        "longName": "Saskatchewan",
+        "hashtag": "skwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
         "shortName": "AB",
         "longName": "Alberta",
         "hashtag": "abwx",
+        "tweetFields": [
+          "TMP",
+          "CONDALPCPN",
+          "CONDASSN",
+          "WSPD"
+        ]
+      },
+      {
+        "shortName": "BC",
+        "longName": "British Columbia",
+        "hashtag": "bcwx",
         "tweetFields": [
           "TMP",
           "CONDALPCPN",
